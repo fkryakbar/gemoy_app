@@ -143,10 +143,10 @@ export default function Index({ decoded }: InferGetServerSidePropsType<typeof ge
 
 
 
-
     }
     useEffect(() => {
         fetchBlog()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [Loading])
     const deleteAlbum = (id: any) => {
         setIsDelete(true)

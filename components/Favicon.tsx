@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function () {
+function Favicon() {
     return (
         <>
             <link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png" />
@@ -21,3 +21,5 @@ export default function () {
         </>
     )
 }
+
+export default Favicon
