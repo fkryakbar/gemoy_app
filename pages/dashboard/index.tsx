@@ -40,7 +40,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 
-export default function index({ decoded }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Index({ decoded }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const [value, setValue] = useState("");
     const [title, setTitle] = useState("");
     const [files, setFile] = useState([]);
