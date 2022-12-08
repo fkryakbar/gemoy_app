@@ -149,6 +149,10 @@ export default function Index({ decoded }: InferGetServerSidePropsType<typeof ge
                 });
             }
 
+        } else {
+            setApiMessage(api.data.message)
+            setShowMessageError(true)
+            setLoading(false)
         }
 
 
