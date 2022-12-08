@@ -56,13 +56,13 @@ function RecentPost() {
                                 album.files.map((image: any, index: any) => {
                                     if (image.filetype == 'image/png' || image.filetype == 'image/jpg' || image.filetype == 'image/jpeg') {
                                         return (
-                                            <SwiperSlide key={index}><Image src={`/uploads/${image.filename}`} width={572} height={357.5} alt="" style={{ width: '100%', height: 'auto' }} /></SwiperSlide>
+                                            <SwiperSlide key={index}><img src={`${image.link}`} width={572} height={357.5} alt="" style={{ width: '100%', height: 'auto' }} /></SwiperSlide>
                                         )
                                     } else if (image.filetype == 'video/mp4') {
                                         return (
                                             <SwiperSlide key={index} className='py-10 bg-slate-200'>
                                                 <video width="100%" height="100%" controls>
-                                                    <source src={`uploads/${image.filename}`} type="video/mp4" />
+                                                    <source src={`uploads/${image.link}`} type="video/mp4" />
                                                 </video>
 
                                             </SwiperSlide>

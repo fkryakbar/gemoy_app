@@ -14,6 +14,21 @@ import { getCookie } from 'cookies-next';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content';
 import Favicon from '../../components/Favicon';
+import { initializeApp } from "firebase/app";
+import { getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from "firebase/storage";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyA-sZdPouVcB6JA4D5pWCqY49BOwZnYGRw",
+    authDomain: "gemoy-app.firebaseapp.com",
+    projectId: "gemoy-app",
+    storageBucket: "gemoy-app.appspot.com",
+    messagingSenderId: "948407186459",
+    appId: "1:948407186459:web:3b99013d2812e2231d74be",
+    measurementId: "G-40DF94QGPP"
+};
+
+const app = initializeApp(firebaseConfig);
+const storage = getStorage(app, 'gs://gemoy-app.appspot.com');
 
 
 const MDEditor = dynamic(
@@ -91,7 +106,7 @@ export default function Index({ decoded }: InferGetServerSidePropsType<typeof ge
         for (let file of data) {
             let newFile = new File([file], String(new Date().getTime()) + ' - ' + file['name'], { type: file.type })
             dataOfFile.push(newFile)
-            fileName.push({ filename: newFile.name, filetype: newFile.type })
+            fileName.push({ filename: newFile.name, filetype: newFile.type, link: '' })
 
         }
         const api = await axios.post('/api/album', {
@@ -100,26 +115,40 @@ export default function Index({ decoded }: InferGetServerSidePropsType<typeof ge
             caption: caption
         })
         if (api.data.code == 200) {
+            let i = 0
             for (let file of dataOfFile) {
-                const api = await axios.post('/api/files', {
-                    'files': file,
-                }, {
-                    headers: { 'content-type': 'multipart/form-data' }, onUploadProgress: progressEvent => {
-                        setProgress((progressEvent.loaded / progressEvent.total!) * 100)
-                        setShowProgress(true)
-                    }
-                })
+                let storageRef = ref(storage, `uploads/${file.name}`);
+                let uploadTask = uploadBytesResumable(storageRef, file);
+
+                uploadTask.on('state_changed', (snapshot) => {
+                    let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    setProgress(progress);
+                    setShowProgress(true)
+                }, (error) => {
+
+                }, async () => {
+                    await getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+                        fileName[i].link = downloadURL
+
+                        i++
+                        let update = await axios.put('/api/album', { title: title, files: fileName })
+                        if (update.data.code == 200) {
+                            setApiMessage(api.data.message)
+                            setShowMessageSuccess(true)
+                            setShowProgress(false)
+                            setLoading(false)
+                            e.target.reset();
+                            setValue('')
+                        } else {
+                            setApiMessage(api.data.message)
+                            setShowMessageError(true)
+                            setLoading(false)
+
+                        }
+                    });
+                });
             }
-            setApiMessage(api.data.message)
-            setShowMessageSuccess(true)
-            setShowProgress(false)
-            setLoading(false)
-            e.target.reset();
-            setValue('')
-        } else {
-            setApiMessage(api.data.message)
-            setShowMessageError(true)
-            setLoading(false)
+
         }
 
 
