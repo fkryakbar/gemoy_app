@@ -59,7 +59,7 @@ function RecentPost() {
 
                                     if (image.filetype == 'image/png' || image.filetype == 'image/jpg' || image.filetype == 'image/jpeg') {
                                         return (
-                                            <SwiperSlide key={index}><img src={`${image.link}`} width={572} height={357.5} alt="recent" /></SwiperSlide>
+                                            <SwiperSlide key={index}><img src={`${image.link}`} width={572} height={357.5} alt="recent" loading="lazy" /></SwiperSlide>
                                         )
                                     } else if (image.filetype == 'video/mp4') {
                                         return (
