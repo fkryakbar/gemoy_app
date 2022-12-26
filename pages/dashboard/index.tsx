@@ -17,6 +17,9 @@ import Favicon from '../../components/Favicon';
 import { initializeApp } from "firebase/app";
 import { getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from "firebase/storage";
 
+
+
+
 const firebaseConfig = {
     apiKey: "AIzaSyA-sZdPouVcB6JA4D5pWCqY49BOwZnYGRw",
     authDomain: "gemoy-app.firebaseapp.com",
@@ -105,6 +108,7 @@ export default function Index({ decoded }: InferGetServerSidePropsType<typeof ge
         const fileName: any[] = []
         for (let file of data) {
             let newFile = new File([file], String(new Date().getTime()) + ' - ' + file['name'], { type: file.type })
+
             dataOfFile.push(newFile)
             fileName.push({ filename: newFile.name, filetype: newFile.type, link: '' })
 

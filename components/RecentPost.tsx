@@ -6,6 +6,7 @@ import 'swiper/css';
 import axios from 'axios';
 import moment from 'moment';
 
+
 moment.updateLocale('en', {
     relativeTime: {
         future: "in %s",
@@ -54,9 +55,11 @@ function RecentPost() {
                         >
                             {
                                 album.files.map((image: any, index: any) => {
+
+
                                     if (image.filetype == 'image/png' || image.filetype == 'image/jpg' || image.filetype == 'image/jpeg') {
                                         return (
-                                            <SwiperSlide key={index}><img src={`${image.link}`} width={572} height={357.5} alt="" style={{ width: '100%', height: 'auto' }} /></SwiperSlide>
+                                            <SwiperSlide key={index}><img src={`${image.link}`} width={572} height={357.5} alt="recent" /></SwiperSlide>
                                         )
                                     } else if (image.filetype == 'video/mp4') {
                                         return (
@@ -64,7 +67,6 @@ function RecentPost() {
                                                 <video width="100%" height="100%" controls>
                                                     <source src={`${image.link}`} type="video/mp4" />
                                                 </video>
-
                                             </SwiperSlide>
                                         )
                                     }
